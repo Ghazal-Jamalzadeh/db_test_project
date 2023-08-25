@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
         bloc.stream.forEach((state) {
           if (state is Success) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('عملیات با موفقی انجام شد'),
+                content: Text('عملیات با موفقیت انجام شد'),
                 duration: Duration(seconds: 3)));
           } else if (state is Error) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
