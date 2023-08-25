@@ -16,4 +16,11 @@ class Customer extends HiveObject {
   String email = '';
   @HiveField(5)
   String bankAccount =  '' ;
+
+  Customer({required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.phoneNumber,
+    required this.email,
+    required this.bankAccount});
 }

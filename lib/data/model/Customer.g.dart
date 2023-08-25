@@ -16,13 +16,14 @@ class CustomerAdapter extends TypeAdapter<Customer> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Customer()
-      ..firstName = fields[0] as String
-      ..lastName = fields[1] as String
-      ..dateOfBirth = fields[2] as DateTime
-      ..phoneNumber = fields[3] as String
-      ..email = fields[4] as String
-      ..bankAccount = fields[5] as String;
+    return Customer(
+      firstName: fields[0] as String,
+      lastName: fields[1] as String,
+      dateOfBirth: fields[2] as DateTime,
+      phoneNumber: fields[3] as String,
+      email: fields[4] as String,
+      bankAccount: fields[5] as String,
+    );
   }
 
   @override
