@@ -1,5 +1,5 @@
 import 'package:db_test_project/data/model/Customer.dart';
-import 'package:db_test_project/ui/screens/main_screen.dart';
+import 'package:db_test_project/ui/screens/main/main_screen.dart';
 import 'package:db_test_project/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
