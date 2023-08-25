@@ -104,11 +104,13 @@ class _MainScreenState extends State<MainScreen> {
                           errorText: errorMessageLastName.isNotEmpty ? errorMessageLastName : null)),
                   TextField(
                       controller: dateOfBirthController,
+                      keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                           labelText: 'DateOfBirth',
                           errorText: errorMessageDateOfBirth.isNotEmpty ? errorMessageDateOfBirth : null)),
                   TextField(
                       controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                           labelText: 'PhoneNumber',
                           errorText: errorMessagePhoneNumber.isNotEmpty ? errorMessagePhoneNumber : null)),
@@ -118,6 +120,8 @@ class _MainScreenState extends State<MainScreen> {
                           labelText: 'Email', errorText: errorMessageEmail.isNotEmpty ? errorMessageEmail : null)),
                   TextField(
                       controller: bankAccountController,
+                      keyboardType: TextInputType.number,
+                      maxLength: 16,
                       decoration: InputDecoration(
                           labelText: 'BankAccount',
                           errorText: errorMessageBankAccount.isNotEmpty ? errorMessageBankAccount : null)),
@@ -186,6 +190,11 @@ class _MainScreenState extends State<MainScreen> {
         errorMessageEmail = 'فرمت وارد شده برای ایمیل نادرست است';
       });
       return false ;
+    }else if(!isValidBankAccount(bankAccountController.value.text)){
+      setState(() {
+        errorMessageBankAccount = 'فرمت وارد شده برای شماره کارت بانکی نادرست است';
+      });
+      return false ;
     }
 
     return true;
@@ -198,4 +207,6 @@ class _MainScreenState extends State<MainScreen> {
   bool isValidEmail(String? value)=>
   RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(value ?? '');
+
+  bool isValidBankAccount(String value) => value.length == 16 ;
 }
