@@ -10,5 +10,5 @@ class Success extends MainState{
 
 class Error extends MainState {
   String message;
-  Error({ this.message = 'خطای نامشخص'}) ;
+  Error({ this.message = 'مشخصات مشتری تکراری است'}) ;
 }

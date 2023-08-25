@@ -15,8 +15,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainEvent>((event, emit) async {
       try {
         if (event is AddCustomer) {
-          // await repository.addReminder(event.reminder);
-          // emit(InsertReminderSuccess());
+         var result = await repository.addCustomer(event.customer);
+         if(result){
+          emit(Success());
+
+         }else{
+           emit(Error()) ;
+         }
         }
       } catch (e) {
         debugPrint(e.toString());
