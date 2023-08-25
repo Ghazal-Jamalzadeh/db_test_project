@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   TextEditingController firstNameController = TextEditingController() ;
+
   TextEditingController lastNameController = TextEditingController() ;
+
   TextEditingController dateOfBirthController = TextEditingController() ;
+
   TextEditingController phoneNumberController = TextEditingController() ;
+
   TextEditingController emailController = TextEditingController() ;
+
   TextEditingController bankAccountController = TextEditingController() ;
+
+  @override
+  void dispose() {
+    super.dispose();
+    firstNameController.dispose() ;
+    lastNameController.dispose() ;
+    dateOfBirthController.dispose() ;
+    phoneNumberController.dispose() ;
+    emailController.dispose() ;
+    bankAccountController.dispose() ;
+  }
 
   @override
   Widget build(BuildContext context) {
