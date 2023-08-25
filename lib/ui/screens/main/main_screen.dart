@@ -6,15 +6,18 @@ import 'package:db_test_project/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:persian_datetimepickers/persian_datetimepickers.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+  DateTime? selectedDateTime;
+
   TextEditingController firstNameController = TextEditingController();
 
   TextEditingController lastNameController = TextEditingController();
@@ -38,52 +41,6 @@ class _MainScreenState extends State<MainScreen> {
   String errorMessageEmail = '';
 
   String errorMessageBankAccount = '';
-
-  @override
-  void initState() {
-    super.initState();
-    firstNameController.addListener(() {
-      setState(() {
-        errorMessageFirstName = '';
-      });
-    });
-    lastNameController.addListener(() {
-      setState(() {
-        errorMessageLastName = '';
-      });
-    });
-    dateOfBirthController.addListener(() {
-      setState(() {
-        errorMessageDateOfBirth = '';
-      });
-    });
-    phoneNumberController.addListener(() {
-      setState(() {
-        errorMessagePhoneNumber = '';
-      });
-    });
-    emailController.addListener(() {
-      setState(() {
-        errorMessageEmail = '';
-      });
-    });
-    bankAccountController.addListener(() {
-      setState(() {
-        errorMessageBankAccount = '';
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    firstNameController.dispose();
-    lastNameController.dispose();
-    dateOfBirthController.dispose();
-    phoneNumberController.dispose();
-    emailController.dispose();
-    bankAccountController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,24 +91,42 @@ class _MainScreenState extends State<MainScreen> {
                                 errorText: errorMessageLastName.isNotEmpty
                                     ? errorMessageLastName
                                     : null)),
+                        FocusScope(
+                          onFocusChange: (value) async {
+                            if (value) {
+                              final DateTime? date =
+                                  await showPersianDatePicker(
+                                context: context,
+                              );
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              if (date != null) {
+                                selectedDateTime = date;
+                                dateOfBirthController.text =
+                                    date.toFancyString();
+                              }
+                            }
+                          },
+                          child: TextField(
+                              controller: dateOfBirthController,
+                              keyboardType: TextInputType.datetime,
+                              decoration: InputDecoration(
+                                  labelText: 'DateOfBirth',
+                                  errorText: errorMessageDateOfBirth.isNotEmpty
+                                      ? errorMessageDateOfBirth
+                                      : null)),
+                        ),
                         TextField(
-                            controller: dateOfBirthController,
-                            keyboardType: TextInputType.datetime,
-                            decoration: InputDecoration(
-                                labelText: 'DateOfBirth',
-                                errorText: errorMessageDateOfBirth.isNotEmpty
-                                    ? errorMessageDateOfBirth
-                                    : null)),
-                        TextField(
-                            controller: phoneNumberController,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                                labelText: 'PhoneNumber',
-                                errorText: errorMessagePhoneNumber.isNotEmpty
-                                    ? errorMessagePhoneNumber
-                                    : null)),
+                          controller: phoneNumberController,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                              labelText: 'PhoneNumber',
+                              errorText: errorMessagePhoneNumber.isNotEmpty
+                                  ? errorMessagePhoneNumber
+                                  : null),
+                        ),
                         TextField(
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'Email',
                                 errorText: errorMessageEmail.isNotEmpty
@@ -194,6 +169,52 @@ class _MainScreenState extends State<MainScreen> {
     ));
   }
 
+  @override
+  void initState() {
+    super.initState();
+    firstNameController.addListener(() {
+      setState(() {
+        errorMessageFirstName = '';
+      });
+    });
+    lastNameController.addListener(() {
+      setState(() {
+        errorMessageLastName = '';
+      });
+    });
+    dateOfBirthController.addListener(() {
+      setState(() {
+        errorMessageDateOfBirth = '';
+      });
+    });
+    phoneNumberController.addListener(() {
+      setState(() {
+        errorMessagePhoneNumber = '';
+      });
+    });
+    emailController.addListener(() {
+      setState(() {
+        errorMessageEmail = '';
+      });
+    });
+    bankAccountController.addListener(() {
+      setState(() {
+        errorMessageBankAccount = '';
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    dateOfBirthController.dispose();
+    phoneNumberController.dispose();
+    emailController.dispose();
+    bankAccountController.dispose();
+  }
+
   bool checkFieldsValidity() {
     if (firstNameController.value.text.isEmpty) {
       setState(() {
@@ -205,7 +226,7 @@ class _MainScreenState extends State<MainScreen> {
         errorMessageLastName = 'نام خانوادگی نمی تواند خالی باشد';
       });
       return false;
-    } else if (dateOfBirthController.value.text.isEmpty) {
+    } else if (selectedDateTime == null) {
       setState(() {
         errorMessageDateOfBirth = 'تاریخ تولد نمی تواند خالی باشد';
       });
@@ -262,7 +283,7 @@ class _MainScreenState extends State<MainScreen> {
         lastName: lastNameController.value.text,
         phoneNumber: phoneNumberController.value.text,
         email: emailController.value.text,
-        dateOfBirth: DateTime.now(),
+        dateOfBirth: selectedDateTime!,
         bankAccount: bankAccountController.value.text);
   }
 }
